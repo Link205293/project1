@@ -1,0 +1,53 @@
+//Garrett Stoddard
+//Project one
+
+
+// Global variables
+float goldx, goldy;
+float goblinx, gobliny;
+float soldierx, soldiery;
+float h = 750;
+float w = 1000;
+
+void setup()
+{
+    size(1000,750);
+   // reset();
+   
+}
+
+void draw ()
+{
+  landscape();
+  //goblin();
+  //soldier();
+  //gold();
+  //memos();
+  
+}
+
+
+// making the area look interesting
+void landscape()
+{
+  background(66,169,219);
+  fill(#C9A93F); // green hex value from the color tool
+  rect(0,h/3,w,2*h/3);
+  //int n;
+  //n = n +1;
+  cactus(500,500);
+  
+}
+
+//being a rebel making dem cacti
+void cactus(float x, float y)
+{
+  fill(#3AD35C);
+  noStroke();
+  rect(x,y, 20, 150, 25, 25, 25, 25);
+  rect(x-40, y+75, 50, 20, 25, 25, 25, 25);
+  rect(x+10, y+50, 50, 20, 25, 25, 25, 25);
+  rect(x-40, y+85, 20, -50, 25, 25, 25, 25);
+  rect(x+40, y+60, 20, -50, 25, 25, 25, 25);
+  stroke(0);
+}
