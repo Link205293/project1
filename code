@@ -1,29 +1,41 @@
 //Garrett Stoddard
 //Project one
+//Having fun, changed things up a little bit, but everything is basically the same.
+//The hero now chases a villan who is trying to steal coins, so if the goblin gets coins
+//the score is deducted, but if he catches the goblin then the score is incrimented, also
+//I was feeling a desert landscape instead of a forest, so I made sand and cacti, instead of grass and trees.
+//also the house is a tent, because that made more sense in the desert
 
 
 // Global variables
-float goldx, goldy;
-float goblinx, gobliny;
-float soldierx, soldiery;
 float h = 750;
 float w = 1000;
+float goldx = random(50, 950), goldy = random(h/3+50, h-50);
+float goblinx = 600, gobliny = h/3+50;
+
+//this is supposed to radomly set the soldier to the left or the right side, but for some reason only goes left
+float soldierx = ((int(random(0,1)))*1000); 
+float soldiery = random(h/3+50, h-50);
+float score;
+float d = 500;
+int c = 0;
+int t = 0;
 
 void setup()
 {
     size(1000,750);
-   // reset();
    
 }
 
 void draw ()
 {
   landscape();
-  //goblin();
-  //soldier();
-  //gold();
-  //memos();
-  
+  goblin(goblinx, gobliny);
+  soldier(soldierx, soldiery);
+  gold(goldx, goldy);
+  score();
+  drawButton(800, 200, 50, 20, 0, 0, 0);
+ 
 }
 
 
@@ -32,13 +44,34 @@ void landscape()
 {
   background(66,169,219);
   fill(#C9A93F); // green hex value from the color tool
-  rect(0,h/3,w,2*h/3);
-  //int n;
-  //n = n +1;
-  cactus(500,500);
+  noStroke();
+  rect(0,h/3,w,2*h/3); // sand where the action takes place
+  sun();
+  house();
+  cactus(230, h/3-67);
+  cactus(100, 500);
+  cactus(900, 600);
+  cactus(354, 546);
+  cactus(654, 424);
+  cactus(846, 276);
+  cactus(576, 675);
+  cactus(421, 654);
+  cactus(579, 300);
+  cactus(280, 400);
   
+  stroke(0);
+  fill(0);
+  text("Goblin Games", 500, 20);
+  text("Garrett Stoddard", 10, 740);
 }
 
+// setting up the score
+void score()
+{
+  fill(0);
+  text("score :", 50, 100);
+  text(score, 100, 100);
+}
 //being a rebel making dem cacti
 void cactus(float x, float y)
 {
@@ -51,3 +84,236 @@ void cactus(float x, float y)
   rect(x+40, y+60, 20, -50, 25, 25, 25, 25);
   stroke(0);
 }
+
+//making the sun and making it move
+void sun()
+{
+  
+  fill(#FFD334);
+  ellipse(d, 50, 40, 40);
+  d++;
+  if (d > 1100)
+  {
+    d = -50;
+  }
+  
+}
+
+// drawing the goblin
+void goblin(float x, float y)
+{
+  noStroke();
+  fill(#5F330A);
+  triangle(x-20, y+5, x+10, y+5, x-10, y+25);//gold bag
+  ellipse(x-10, y+30, 30, 30);
+  stroke(#155509);
+  strokeWeight(7);
+  line(x, y+20, x-20, y+15);//arms
+  line(x, y+20, x+20, y+15);
+  noStroke();
+  fill(#155509);
+  if (t%20 >= 11)
+  {
+    triangle(x, y+30, x-5, y+55, x-17, y+55);//feet
+    triangle(x, y+30, x+5, y+55, x+17, y+55);
+    t++;
+  }
+  else if (t%20 <= 10)
+  {
+    triangle(x, y+30, x-10, y+55, x-22, y+55);
+    triangle(x, y+30, x+10, y+55, x+22, y+55);
+    t++;
+  }
+  
+  fill(#F01B1B);
+  ellipse(x, y+25, 25, 35);//body
+  fill(#155509);
+  ellipse(x, y, 30, 30);//head
+  triangle(x, y, x-20, y, x-20, y-20);//ears
+  triangle(x, y, x+20, y, x+20, y-20);
+  fill(0);
+  ellipse(x-5, y, 5, 5);//eyes
+  ellipse(x+5, y, 5, 5);
+  strokeWeight(1);
+  stroke(0);
+  text( "GOLDDDDD!!!!", x+50, y);
+  //Moving the goblin
+    if( goldx > goblinx)
+  {
+    goblinx += 2;
+  }
+  else if( goldx < goblinx)
+  {
+    goblinx -= 2;
+  }
+  if( goldy > gobliny + 20)
+  {
+    gobliny += 2;
+  }
+  else if( goldy < gobliny + 20)
+  {
+    gobliny -= 2;
+  }
+}
+
+//creating the gold
+void gold(float x, float y)
+{
+  noStroke();
+  fill(#D3B506);
+  ellipse(x, y, 20, 20);
+  stroke(0);
+  strokeWeight(3);
+  line(x, y+4, x, y-4);
+  if ( dist(goblinx, gobliny+20, goldx, goldy) <= 10)
+  {
+    score -= 50;
+    goldx = random(50, 950); 
+    goldy = random(h/3+50, h-50);
+  }
+}
+
+// drawing the house
+void house()
+{
+  strokeWeight(4);
+  fill(#B4B4B4);
+  triangle(500, h/3, 600, h/3 - 100, 700, h/3);
+  //line(500, h/3, 600, h/3 - 100);
+  //line(600, h/3 - 100, 700, h/3);
+  stroke(#342201);
+  line(600, h/3-4, 600, h/3 - 96);
+  strokeWeight(1);
+  stroke(0);
+}
+
+
+// drawing the soldier
+void soldier(float x, float y)
+{
+  stroke(#342201);
+  strokeWeight(7);
+  if (c%20 >= 11)
+  {
+    line(x, y + 30, x - 10, y + 55);//legs
+    line(x, y + 30, x + 10, y + 55);
+    c++;
+  }
+  else if (t%20 <= 10)
+  {
+    line(x, y + 30, x - 15, y + 55);//legs
+    line(x, y + 30, x + 15, y + 55);
+    c++;
+  }
+  
+  stroke(#F3FAC0);
+  line(x, y+20, x-25, y+25);//arms
+  line(x, y+20, x+25, y+15);
+  stroke(#BFBDBD);
+  strokeWeight(4);
+  line(x-20, y+30, x-35, y);
+  noStroke();
+  fill(#AA0C0C);
+  ellipse(x, y+25, 30, 40);// body
+  fill(#F3FAC0);
+  ellipse(x, y, 30, 30);//head
+  fill(0);
+  ellipse(x-5, y, 5, 5);//eyes
+  ellipse(x+5, y, 5, 5);
+  strokeCap(SQUARE);
+  strokeWeight(5);
+  stroke(#AA0C0C);
+  line(x-10, y-15, x+10, y-15);// hat
+  stroke(0);
+  line(x-20, y-10, x+20, y-10);//hat
+  line(x-10, y-20, x+10, y-20);
+  stroke(255);
+  line(x, y+20, x, y+40);// chest cross
+  line(x-5, y+25, x+5, y+25);
+  strokeCap(ROUND);
+  strokeWeight(1);
+  text( "Stop Theif!!", x+50, y);
+  //Moving the soldier
+    if( goblinx > soldierx)
+  {
+    soldierx += 1.5;
+  }
+  else if( goblinx < soldierx)
+  {
+    soldierx -= 1.5;
+  }
+  if( gobliny > soldiery )
+  {
+    soldiery += 1.5;
+  }
+  else if( gobliny < soldiery)
+  {
+    soldiery -= 1.5;
+  }
+  // when the soldier gets the goblin
+  if ( dist(goblinx, gobliny, soldierx, soldiery) <= 20)
+  {
+    score += 100;
+    reset();
+  }
+  
+}
+
+void reset()
+{
+  goldx = random(50, 950);
+  goldy = random(h/3+50, h-50);
+  goblinx = 600;
+  gobliny = h/3-50;
+  
+  //this is supposed to radomly set the soldier to the left or the right side, but for some reason only goes left
+  soldierx = ((int(random(0,1)))*1000);
+  soldiery = random(h/3+50, h-50);
+}
+
+// button
+void drawButton(float x, float y, float q, float p, float rr, float rg, float rb)
+{
+  // color of the rectangle
+  fill(rr, rg, rb);
+  //Changes the mode of the rectangle to the center
+  rectMode(CENTER);
+  rect(x,y,q,p);
+  rectMode(CORNER);
+}
+
+void mousePressed()
+{
+  if( hit( mouseX, mouseY,  800, 200, 50, 20) == true)
+  {
+    score -= 50;
+    reset();
+  }
+}
+
+boolean hit( float x1, float y1, float x2, float y2, float w, float h ) {
+  boolean result;
+
+
+  // +++++ STUB ALWAYS RETURNS TRUE!
+  if ( abs(x1-x2) < w && abs(y1-y2)<h ) {
+    result=  true;
+  } else {
+    result=false;
+  }
+
+  return result;
+}
+/**void memos()
+{
+  if ( dist(goblinx, gobliny, soldierx, soldiery) <= 20)
+  {
+        text("To jail with you", 200, 100);
+        c+=1;
+  if(c < 50)
+  {
+    c = 0;
+  }
+  }
+}
+**/
